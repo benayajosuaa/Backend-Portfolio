@@ -51,8 +51,8 @@ model journeys {
   year         Int
   content      String?
   order_index  Int
-  created_at   DateTime
-  updated_at   DateTime
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
 }
 
 model works {
@@ -66,8 +66,8 @@ model works {
   published_at  DateTime?
   status        statusWork
   order_index   Int
-  created_at    DateTime
-  updated_at    DateTime
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
 }
 
 model contact_messages {
@@ -78,5 +78,5 @@ model contact_messages {
   subject     String        @db.VarChar(200)
   message     String
   status      statusContact
-  created_at  DateTime
+  created_at   DateTime @default(now())
 }
