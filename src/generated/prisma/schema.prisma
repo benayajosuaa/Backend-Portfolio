@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum roleUser {
+  admin
+  user
+}
+
+enum statusWork {
+  Draft
+  Published
+}
+
+enum typeJourney {
+  Education
+  Work
+  Organization
+}
+
+enum statusContact {
+  Unread
+  Read
+  Replied
+  Archived
+}
+
+model users {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique @db.VarChar(200)
+  password_hash String   @db.VarChar(255)
+  role          roleUser @default(admin)
+  created_at    DateTime
+  updated_at    DateTime
+}
+
+model journeys {
+  id          Int         @id @default(autoincrement())
+  type        typeJourney
+  title       String      @db.VarChar(200)
+  excerpt     String      @db.VarChar(300)
+  cover_image String
+  year        Int
+  content     String?
+  order_index Int
+  created_at  DateTime
+  updated_at  DateTime
+}
+
+model works {
+  id           Int        @id @default(autoincrement())
+  title        String     @db.VarChar(200)
+  excerpt      String     @db.VarChar(300)
+  cover_image  String
+  github_url   String?
+  demo_url     String?
+  drive_url    String?
+  published_at DateTime?
+  status       statusWork
+  order_index  Int
+  created_at   DateTime
+  updated_at   DateTime
+}
+
+model contact_messages {
+  id         Int           @id @default(autoincrement())
+  name       String        @db.VarChar(200)
+  email      String        @db.VarChar(200)
+  phone      String?       @db.VarChar(50)
+  subject    String        @db.VarChar(200)
+  message    String
+  status     statusContact
+  created_at DateTime
+}
