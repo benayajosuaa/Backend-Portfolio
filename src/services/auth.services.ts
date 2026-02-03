@@ -1,7 +1,7 @@
 import prisma from "../lib/prisma.js";
 import brcypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { register } from "node:module";
+
 
 export const AuthServices = {
     async login (email : string, password: string){
