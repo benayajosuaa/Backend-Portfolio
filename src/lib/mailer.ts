@@ -16,18 +16,18 @@ const transporter = nodemailer.createTransport({
  * HTML-safe & email-client friendly
  */
 function emailSignature() {
-  return `
-<br><br>
-<hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
-<p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#444;">
-  Regards,<br>
-  <strong>Ben</strong><br>
-  Software Engineer<br>
-  <a href="mailto:${process.env.SMTP_USER}" style="color:#1a73e8;text-decoration:none;">
-    ${process.env.SMTP_USER}
-  </a>
-</p>
-`
+    return `
+    <br><br>
+    <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
+    <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#444;">
+    Regards,<br>
+    <strong>Ben</strong><br>
+    Software Engineer<br>
+    <a href="mailto:${process.env.SMTP_USER}" style="color:#1a73e8;text-decoration:none;">
+        ${process.env.SMTP_USER}
+    </a>
+    </p>
+    `
 }
 
 export async function sendEmail(
