@@ -4,41 +4,27 @@ import jwt from "jsonwebtoken"
 
 
 export const AuthServices = {
-    async login (email : string, password: string){
-        const user = await prisma.users.findUnique({
-            where: {email}
-        })
+   async login(email: string, password: string) {
+        const user = await prisma.users.findUnique({ where: { email } });
+        if (!user) throw new Error("invalid");
 
-        if (!user){
-            throw new Error("invalid credentials")
-        }
-
-        const isValid = await brcypt.compare(
-            password,
-            user.password_hash
-        )
-
-        if(!isValid){
-            throw new Error("invalid credentials")
-        }
+        const valid = await brcypt.compare(password, user.password_hash);
+        if (!valid) throw new Error("invalid");
 
         const token = jwt.sign(
-            {
-                id: user.id,
-                role: user.role
-            },
-            process.env.JWT_SECRET!,
-            {expiresIn: "1d"}
-        )
+        { id: user.id, role: user.role },
+        process.env.JWT_SECRET!,
+        { expiresIn: "1d" }
+        );
 
-        return{
-            token, 
-            user: {
-                id: user.id,
-                email: user.email,
-                role: user.role
-            }
-        }
+        return {
+        token,
+        user: {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+        },
+        };
     },
 
     async register(email: string, password: string){

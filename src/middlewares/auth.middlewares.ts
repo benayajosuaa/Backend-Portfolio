@@ -11,11 +11,12 @@ export interface AuthRequest extends Request {
 export const verifyToken: RequestHandler = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!authHeader || !authHeader.toLowerCase().startsWith("bearer")) {
     return res.status(401).json({ message: "unauthorized" });
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.replace(/bearer/i, "").trim();
+
   if (!token) {
     return res.status(401).json({ message: "unauthorized" });
   }
@@ -31,11 +32,9 @@ export const verifyToken: RequestHandler = (req, res, next) => {
       role: "admin" | "user";
     };
 
-    // ⬇️ CAST DI SINI, BUKAN DI SIGNATURE
     (req as AuthRequest).user = decoded;
-
     next();
-  } catch {
+  } catch (err) {
     return res.status(401).json({ message: "invalid token" });
   }
 };
