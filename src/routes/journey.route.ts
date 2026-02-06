@@ -12,26 +12,29 @@ router.get("/", JourneyController.getAll);
 router.get("/:id", JourneyController.getById);
 
 router.post(
-  "/",
-  verifyToken,
-  requireAdmin,
-  uploadJourneyImage.single("cover_image"),
-  JourneyController.create
-);
-
-router.put(
-    "/:id",
+    "/",
     verifyToken,
     requireAdmin,
-    JourneyController.update
+    uploadJourneyImage.single("cover_image"),
+    JourneyController.create
 );
 
+
 router.put(
-  "/:id/image",
+  "/:id",
   verifyToken,
   requireAdmin,
-  uploadJourneyImage.single("cover_image"),
-  JourneyController.updateImage
+  (req, res, next) => {
+    uploadJourneyImage.single("cover_image")(req, res, (err) => {
+      if (err) {
+        return res.status(400).json({
+          message: err.message || "Upload image failed",
+        });
+      }
+      next();
+    });
+  },
+  JourneyController.update
 );
 
 
