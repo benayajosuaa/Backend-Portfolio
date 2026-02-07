@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
 export const uploadJourneyImage = multer({
   storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
+    fileSize: 6 * 1024 * 1024, // 5MB
   },
   fileFilter: (_req, file, cb) => {
     if (!file) return cb(null, true);
