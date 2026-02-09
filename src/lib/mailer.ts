@@ -21,7 +21,7 @@ function emailSignature() {
     <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
     <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#444;">
     Regards,<br>
-    <strong>Ben</strong><br>
+    <strong>Benaya Josua</strong><br>
     Software Engineer<br>
     <a href="mailto:${process.env.SMTP_USER}" style="color:#1a73e8;text-decoration:none;">
         ${process.env.SMTP_USER}

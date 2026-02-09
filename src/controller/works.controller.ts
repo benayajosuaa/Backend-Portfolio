@@ -1,7 +1,10 @@
 import type { Request, Response } from "express";
 import { WorkServices } from "../services/work.services.js";
+import type { Prisma } from "@prisma/client";
+
 
 export const WorkController = {
+
   async getAll(req: Request, res: Response) {
     try {
       const works = await WorkServices.getAll();
@@ -47,13 +50,45 @@ export const WorkController = {
 
   async create(req: Request, res: Response) {
     try {
-      const newWork = await WorkServices.create(req.body);
+      if (!req.file) {
+        return res.status(400).json({
+          message: "Cover image wajib diupload",
+        });
+      }
+
+      const {
+        title,
+        excerpt,
+        status,
+        order_index,
+        github_url,
+        demo_url,
+        drive_url,
+      } = req.body;
+
+      if (!title || !excerpt || !status || !order_index) {
+        return res.status(400).json({
+          message: "Field wajib belum lengkap",
+        });
+      }
+
+      const newWork = await WorkServices.create({
+        title,
+        excerpt,
+        status,
+        order_index: Number(order_index),
+        github_url: github_url || undefined,
+        demo_url: demo_url || undefined,
+        drive_url: drive_url || undefined,
+        cover_image: req.file.filename,
+      });
+
       return res.status(201).json({
         message: "success to create work",
         data: newWork,
       });
     } catch (error) {
-      console.error(error);
+      console.error("CREATE WORK ERROR:", error);
       return res.status(400).json({
         message: "failed to create work",
       });
@@ -69,7 +104,11 @@ export const WorkController = {
     }
 
     try {
-      const updatedWork = await WorkServices.update(id, req.body);
+      const updatedWork = await WorkServices.update(id, {
+        ...req.body,
+        order_index: Number(req.body.order_index),
+      });
+
       return res.status(200).json({
         message: "success to update work",
         data: updatedWork,

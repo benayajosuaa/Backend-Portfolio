@@ -64,10 +64,10 @@ model works {
   demo_url      String?
   drive_url     String?
   published_at  DateTime?
-  status        statusWork
-  order_index   Int
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  status       statusWork @default(Draft)
+  order_index  Int
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
 }
 
 model contact_messages {

@@ -1,6 +1,5 @@
 import prisma from "../lib/prisma.js";
-import {statusWork} from "../generated/prisma/index.js"
-
+import { statusWork } from "@prisma/client";
 
 export interface WorkInterface {
   title: string;
@@ -24,41 +23,37 @@ export interface WorkCreateInput {
   published_at?: Date;
   status: statusWork;
   order_index: number;
-  created_at: Date;
-  updated_at: Date;
 }
-
-
 
 export const WorkServices = {
-    getAll(){
-        return prisma.works.findMany({
-            orderBy: {order_index: "asc"}
-        })
-    },
+  async getAll() {
+    return prisma.works.findMany({
+      orderBy: { order_index: "asc" },
+    });
+  },
 
-    getById(id: number){
-        return prisma.works.findUnique({
-            where : {id}
-        })
-    },
+  async getById(id: number) {
+    return prisma.works.findUnique({
+      where: { id },
+    });
+  },
 
-    create(data: WorkCreateInput){
-        return prisma.works.create({
-            data
-        })
-    },
+  async create(data: WorkCreateInput) {
+    return prisma.works.create({
+      data: data as any,
+    });
+  },
 
-    async update(id: number, data: WorkInterface) {
-        return prisma.works.update({
-            where: { id },
-            data,
-        });
-    },
+  async update(id: number, data: Partial<WorkInterface>) {
+    return prisma.works.update({
+      where: { id },
+      data,
+    });
+  },
 
-    async delete(id: number) {
-        return prisma.works.delete({
-            where: { id },
-        });
-    },    
-}
+  async delete(id: number) {
+    return prisma.works.delete({
+      where: { id },
+    });
+  },
+};
