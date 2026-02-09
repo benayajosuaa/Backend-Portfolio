@@ -56,19 +56,21 @@ model journeys {
 }
 
 model works {
-  id            Int        @id @default(autoincrement())
-  title         String     @db.VarChar(200)
-  excerpt       String     @db.VarChar(300)
-  cover_image   String
-  github_url    String?
-  demo_url      String?
-  drive_url     String?
-  published_at  DateTime?
-  status       statusWork @default(Draft)
+  id           Int        @id @default(autoincrement())
+  title        String
+  excerpt      String
+  cover_image  String
+  github_url   String?
+  demo_url     String?
+  drive_url    String?
+  published_at DateTime?
+  status       statusWork
   order_index  Int
+
   created_at   DateTime   @default(now())
   updated_at   DateTime   @updatedAt
 }
+
 
 model contact_messages {
   id          Int           @id @default(autoincrement())

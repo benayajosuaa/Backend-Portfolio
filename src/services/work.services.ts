@@ -14,15 +14,17 @@ export interface WorkInterface {
 }
 
 export interface WorkCreateInput {
-  title: string;
-  excerpt: string;
-  cover_image: string;
-  github_url?: string;
-  demo_url?: string;
-  drive_url?: string;
-  published_at?: Date;
-  status: statusWork;
-  order_index: number;
+    title: string;
+    excerpt: string;
+    cover_image: string;
+    github_url?: string;
+    demo_url?: string;
+    drive_url?: string;
+    published_at?: Date;
+    status: statusWork;
+    order_index: number;
+    created_at: Date;
+    updated_at: Date;
 }
 
 export const WorkServices = {
@@ -40,11 +42,11 @@ export const WorkServices = {
 
   async create(data: WorkCreateInput) {
     return prisma.works.create({
-      data: data as any,
+      data
     });
   },
 
-  async update(id: number, data: Partial<WorkInterface>) {
+  async update(id: number, data: WorkInterface) {
     return prisma.works.update({
       where: { id },
       data,
