@@ -21,7 +21,14 @@ router.post(
 );
 
 
-router.put("/:id", verifyToken, requireAdmin, WorkController.update);
+router.put(
+  "/:id",
+  verifyToken,
+  requireAdmin,
+  uploadWorkImage.single("cover_image"),
+  WorkController.update
+);
+
 router.delete("/:id", verifyToken, requireAdmin, WorkController.delete);
 
 export default router;

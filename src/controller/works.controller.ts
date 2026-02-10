@@ -84,13 +84,36 @@ export const WorkController = {
   async update(req: Request, res: Response) {
     const id = Number(req.params.id);
     if (isNaN(id)) {
-      return res.status(400).json({
-        message: "id must be a number",
-      });
+      return res.status(400).json({ message: "id must be a number" });
     }
 
     try {
-      const updatedWork = await WorkServices.update(id, req.body);
+      const data: any = {};
+
+      if (req.body.title) data.title = req.body.title;
+      if (req.body.status) data.status = req.body.status;
+      if (req.body.excerpt) data.excerpt = req.body.excerpt;
+
+      if (req.body.order_index !== undefined) {
+        data.order_index = Number(req.body.order_index); 
+      }
+
+      if (req.body.github_url) data.github_url = req.body.github_url;
+      if (req.body.demo_url) data.demo_url = req.body.demo_url;
+      if (req.body.drive_url) data.drive_url = req.body.drive_url;
+
+      if (req.file) {
+        data.cover_image = `/uploads/works/${req.file.filename}`;
+      }
+
+      if (Object.keys(data).length === 0) {
+        return res.status(400).json({
+          message: "no data to update",
+        });
+      }
+
+      const updatedWork = await WorkServices.update(id, data);
+
       return res.status(200).json({
         message: "success to update work",
         data: updatedWork,
@@ -102,6 +125,7 @@ export const WorkController = {
       });
     }
   },
+
 
   async delete(req: Request, res: Response) {
     const id = Number(req.params.id);
